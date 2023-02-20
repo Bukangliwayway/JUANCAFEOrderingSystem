@@ -11,7 +11,7 @@
     die("Connection failed: " . $conn->connect_error);
   }
 
-  $sql1 = "SELECT * FROM Beverage";
+  $sql1 = "SELECT DISTINCT * FROM Beverage WHERE BeverageSize = 'large'";
   $result1 = $conn->query($sql1);
 
   $beverages = array();
@@ -34,10 +34,9 @@
 
   $categories = array();
 
-  if ($result1->num_rows > 0) 
-    while ($row = $result2->fetch_assoc()) 
-      $categories[] = $row['BeverageCategory'];
-    
+  while ($row = $result2->fetch_assoc()) 
+    $categories[] = $row['BeverageCategory'];
+  
 
   $conn->close();
 
@@ -48,7 +47,8 @@
   <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="style.css" />
-    <script defer src="main.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script defer src="main.php"></script>
   </head>
   <body>
     <div class="coffee-bg">
@@ -74,8 +74,9 @@
     <div class="beverages">
       <?php
         foreach($beverages as $beverage){
-          echo '<div class="card" data-category="'.$beverage->category.'">
-                  <img src="'.$beverage->image.'" alt="'.$beverage->name.'" />
+          echo '<div class="card" data-category="'.$beverage->category.'" id="'.$beverage->id.'">
+                  <span class="beverage-count">0</span>
+                  <img class= "beverage-image", src="'.$beverage->image.'" alt="'.$beverage->name.'" />
                   <div class="beverage-info">
                     <h2 class="beverage-title">'.$beverage->name.'</h2>
                     <h2 class="beverage-price">'.$beverage->price.'</h2>
