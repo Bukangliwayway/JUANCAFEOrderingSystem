@@ -92,7 +92,7 @@
 
 
     <!-- beverage selection -->
-    <div id="item">
+    <div id="item" style="display: none">
       <div class="beverage-container">
         <h1 id="item-title">Title</h1>
         <h2 id="item-price">Price</h2>
@@ -103,9 +103,7 @@
       </div>
       <h2>AddOns:</h2>
       <div class="addons-container">
-        <div class="items-addons">
-
-        </div>
+        <div class="items-addons"></div>
       </div>
       <div class="price-container">
         <span> Total Price:</span>
@@ -117,7 +115,15 @@
       </div>
     </div>
   
-
+  <div id="addon-select" style="display: none">
+    <span id="addon-tab-title">Addon Title</span>
+    <span id="addon-tab-price">Addon Price</span>
+    <img src="#" alt="" class="addon-img">
+    <button id="addon-dec">-</button>
+    <input type="text" id="addon-tab-count" value=0>
+    <button id="addon-inc">+</button>
+    <button id="addon-submit">Done</button>
+  </div>
   
   </body>
 </html>
