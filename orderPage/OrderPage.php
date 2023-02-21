@@ -11,13 +11,12 @@
     die("Connection failed: " . $conn->connect_error);
   }
 
-  $sql1 = "SELECT DISTINCT * FROM Beverage WHERE BeverageSize = 'large'";
-  $result1 = $conn->query($sql1);
+  $beveragesRes = $conn->query("SELECT DISTINCT * FROM Beverage WHERE BeverageSize = 'large'");
 
   $beverages = array();
 
-  if ($result1->num_rows > 0) {
-    while ($row = $result1->fetch_assoc()) {
+  if ($beveragesRes->num_rows > 0) {
+    while ($row = $beveragesRes->fetch_assoc()) {
       $beverage = new stdClass();
       $beverage->id = $row['BeverageID'];
       $beverage->name = $row['BeverageName'];
@@ -29,15 +28,13 @@
     }
   }
 
-  $sql2 = "SELECT DISTINCT BeverageCategory FROM Beverage;";
-  $result2 = $conn->query($sql2);
+  $categoriesRes = $conn->query("SELECT DISTINCT BeverageCategory FROM Beverage;");
 
   $categories = array();
 
-  while ($row = $result2->fetch_assoc()) 
+  while ($row = $categoriesRes->fetch_assoc()) 
     $categories[] = $row['BeverageCategory'];
   
-
   $conn->close();
 
 ?>
@@ -88,9 +85,39 @@
     </div>
     <div class="coffee-bg">
       <h3>Items</h3>
-      <span id="item">0</span>
+      <span id="item-count">0</span>
       <h3>Total Price</h3>
       <span id="total-price">P 0</span>
     </div>
+
+
+    <!-- beverage selection -->
+    <div id="item">
+      <div class="beverage-container">
+        <h1 id="item-title">Title</h1>
+        <h2 id="item-price">Price</h2>
+        <img src="#" alt="beverage" id="item-image"/>
+      </div>
+      <div class="sizes-container">
+        
+      </div>
+      <h2>AddOns:</h2>
+      <div class="addons-container">
+        <div class="items-addons">
+
+        </div>
+      </div>
+      <div class="price-container">
+        <span> Total Price:</span>
+        <span id="total-price"> P 0</span>
+      </div>
+      <div class="submission-container">
+        <button id="item-order">LockIn</button>
+        <button id="item-cancel">Cancel</button>
+      </div>
+    </div>
+  
+
+  
   </body>
 </html>
