@@ -24,14 +24,20 @@
     $beverage->size = $row['BeverageSize'];
     $beverage->category = $row['BeverageCategory'];
     
-    $stmt = $conn->prepare("SELECT DISTINCT BeverageSize FROM Beverage WHERE BeverageName = ?");
+    $stmt = $conn->prepare("SELECT DISTINCT BeverageSize, BeveragePrice FROM Beverage WHERE BeverageName = ?");
     $stmt->bind_param("s", $beverage->name);
     $stmt->execute();
     $result = $stmt->get_result();
     $stmt->close();
     
     $sizes = array();
-    while($row = $result->fetch_assoc()) $sizes[] = $row['BeverageSize'];
+    while($row = $result->fetch_assoc()){
+      $size = new stdClass();
+      $size->name = $row['BeverageSize'];
+      $size->price = $row['BeveragePrice'];
+      $sizes[] = $size;
+    }
+    
     
     
     $addons = array();
@@ -59,6 +65,9 @@
 const categoryButtons = document.querySelectorAll(".category");
 const beverages = document.querySelectorAll(".card");
 
+var totalAddonsPrice = 0;
+var itemSizePrice = 0;
+
 // Beverage Selection Variables
 const item = document.getElementById("item");
 const order = document.querySelector("#item-order");
@@ -70,35 +79,6 @@ const incAddon = document.querySelector("#addon-inc");
 const addOnQuantity = document.querySelector("#addon-tab-count");
 const decAddon = document.querySelector("#addon-dec");
 const addonSubmit = document.querySelector("#addon-submit");
-
-// Beverage Selection Variables
-order.addEventListener("click", () => {
-  // ....SUM CODE TO SAVE THE CONTENT OF THE DATA
-  item.style.display = "none";
-});
-
-cancelOrder.addEventListener("click", () => {
-  // ....SUM CODE TO SAVE THE CONTENT OF THE DATA
-  item.style.display = "none";
-});
-
-
-//Addon Selection Buttons
-addonSubmit.addEventListener("click", () => {
-  // ....SUM CODE TO SAVE THE CONTENT OF THE ADDONQUANTITY
-  addonSelection.style.display = "none";
-  addOnQuantity.value = 0;
-});
-
-incAddon.addEventListener("click", () => {
-  addOnQuantity.value = parseInt(addOnQuantity.value) + 1;
-  decAddon.disabled = false;
-});
-
-decAddon.addEventListener("click", () => {
-  addOnQuantity.value = parseInt(addOnQuantity.value) - 1;
-  if (parseInt(addOnQuantity.value) < 1) decAddon.disabled = true;
-});
 
 // Depressing Part
 
@@ -139,15 +119,21 @@ beverages.forEach((card) => {
         itemPrice.textContent = beverage.price;
         itemImage.src = beverage.image;
 
+        itemSizePrice = beverage.price;
+        updateTotalPrice();
+
         // SIZE CONTAINER
         var sizeContainer = document.querySelector(".sizes-container");
+
         //Removes every child of the div
         sizeContainer.innerHTML = "";
+        
         sizes.forEach((size) => {
           const div = document.createElement("div");
           div.classList.add("size-category");
           const sizeName = document.createElement("span");
-          sizeName.textContent = size;
+          sizeName.textContent = size.name;
+          sizeName.value = size.price;
           div.appendChild(sizeName);
           sizeContainer.appendChild(div);
         });
@@ -166,11 +152,12 @@ beverages.forEach((card) => {
           var addonName = document.createElement("span");
           addonName.classList.add("addon-name");
           addonName.textContent = addon.name;
+          addonName.value = addon.price;
 
           // Create the addon count span element
           var addonCount = document.createElement("span");
           addonCount.classList.add("addon-count");
-          addonCount.setAttribute("id", "addon-count");
+          addonCount.setAttribute("class", "addon-count");
           addonCount.textContent = 0;
 
           // Create the addon image element
@@ -186,15 +173,82 @@ beverages.forEach((card) => {
         });
 
         //Set the Visibility of addonSelection
-        const selectedAddon = document.querySelectorAll(".addons-category");
-        selectedAddon.forEach((button) => {
+        const clickedAddon = document.querySelectorAll(".addons-category");
+        clickedAddon.forEach((button) => {
           button.addEventListener("click", () => {
+            const addonSpan = button.querySelector('.addon-count');
+            addonSpan.setAttribute('id', 'chosen-addon');
             addonSelection.style.display = "block";
             decAddon.disabled = true;
           });
         });
+
+        //Set the Value of Total Price
+        const clickedSize = document.querySelectorAll(".size-category");
+        clickedSize.forEach((chosen) => {
+          chosen.addEventListener("click", () => {
+            itemSizePrice = chosen.querySelector("span").value;
+            
+            var itemPrice = document.querySelector("#item-price");
+            itemPrice.textContent = itemSizePrice;
+            
+            updateTotalPrice();
+          });
+        });
+
       } else console.log("The request failed!");
     };
     xhr.send("beverageID=" + beverageID);
   });
 });
+
+
+//Addon Selection Buttons
+addonSubmit.addEventListener("click", () => {
+  const activeAddonCount = document.querySelector("#chosen-addon");
+  const addonDiv = document.querySelectorAll(".addons-category");
+
+  activeAddonCount.innerHTML = addOnQuantity.value;
+  activeAddonCount.removeAttribute('id');
+
+  //Resets its value
+  totalAddonsPrice = 0;
+
+  addonDiv.forEach((div) => {
+    totalAddonsPrice += div.querySelector(".addon-count").textContent * div.querySelector(".addon-name").value;
+  });
+  
+  updateTotalPrice();
+  
+  addonSelection.style.display = "none";
+  addOnQuantity.value = 0;
+
+});
+
+// Beverage Selection Variables
+order.addEventListener("click", () => {
+  // ....SUM CODE TO SAVE THE CONTENT OF THE DATA
+  item.style.display = "none";
+});
+
+cancelOrder.addEventListener("click", () => {
+  // ....SUM CODE TO SAVE THE CONTENT OF THE DATA
+  item.style.display = "none";
+});
+
+
+incAddon.addEventListener("click", () => {
+  addOnQuantity.value = parseInt(addOnQuantity.value) + 1;
+  decAddon.disabled = false;
+});
+
+decAddon.addEventListener("click", () => {
+  addOnQuantity.value = parseInt(addOnQuantity.value) - 1;
+  if (parseInt(addOnQuantity.value) < 1) decAddon.disabled = true;
+});
+
+function updateTotalPrice() {
+  var totalPrice = document.querySelector("#order-price");
+  totalPrice.textContent = parseFloat(totalAddonsPrice) + parseFloat(itemSizePrice);
+  
+}

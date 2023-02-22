@@ -107,7 +107,7 @@
       </div>
       <div class="price-container">
         <span> Total Price:</span>
-        <span id="total-price"> P 0</span>
+        <span id="order-price"> P 0</span>
       </div>
       <div class="submission-container">
         <button id="item-order">LockIn</button>
