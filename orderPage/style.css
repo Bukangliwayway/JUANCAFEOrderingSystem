@@ -12,6 +12,7 @@
     border: none;
   }
 
-
-
+  .class-active{
+    background: #000;
+  }
 }

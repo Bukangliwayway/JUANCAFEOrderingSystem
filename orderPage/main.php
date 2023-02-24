@@ -24,7 +24,7 @@
     $beverage->size = $row['BeverageSize'];
     $beverage->category = $row['BeverageCategory'];
     
-    $stmt = $conn->prepare("SELECT DISTINCT BeverageSize, BeveragePrice FROM Beverage WHERE BeverageName = ?");
+    $stmt = $conn->prepare("SELECT DISTINCT BeverageID, BeverageSize, BeveragePrice FROM Beverage WHERE BeverageName = ?");
     $stmt->bind_param("s", $beverage->name);
     $stmt->execute();
     $result = $stmt->get_result();
@@ -35,6 +35,7 @@
       $size = new stdClass();
       $size->name = $row['BeverageSize'];
       $size->price = $row['BeveragePrice'];
+      $size->id = $row['BeverageID'];
       $sizes[] = $size;
     }
     
@@ -92,6 +93,13 @@ categoryButtons.forEach((button) => {
         beverage.style.display = "none";
       }
     });
+    
+    categoryButtons.forEach(btn => {
+      btn.classList.remove('active-category');
+    });
+
+    // Add 'active-category' class to the clicked size button
+    button.classList.add('active-category');
   });
 });
 
@@ -134,6 +142,8 @@ beverages.forEach((card) => {
           const sizeName = document.createElement("span");
           sizeName.textContent = size.name;
           sizeName.value = size.price;
+          sizeName.setAttribute("class", "size-name");
+          sizeName.setAttribute("beverageID", size.id);
           div.appendChild(sizeName);
           sizeContainer.appendChild(div);
         });
@@ -183,16 +193,26 @@ beverages.forEach((card) => {
           });
         });
 
-        //Set the Value of Total Price
+        //Updates the Value of Total Price through Size
         const clickedSize = document.querySelectorAll(".size-category");
         clickedSize.forEach((chosen) => {
           chosen.addEventListener("click", () => {
-            itemSizePrice = chosen.querySelector("span").value;
+            itemSize = chosen.querySelector(".size-name");
             
+            var itemTitle = document.querySelector("#item-title");
+            itemTitle.value = itemSize.getAttribute('beverageID');
+            console.log(itemTitle.value); 
             var itemPrice = document.querySelector("#item-price");
-            itemPrice.textContent = itemSizePrice;
+            itemPrice.textContent = itemSize.value;
             
             updateTotalPrice();
+
+            clickedSize.forEach(state => {
+              state.classList.remove('active-size');
+            });
+
+            // Add 'active-size' class to the clicked size button
+            chosen.classList.add('active-size');
           });
         });
 
@@ -211,15 +231,14 @@ addonSubmit.addEventListener("click", () => {
   activeAddonCount.innerHTML = addOnQuantity.value;
   activeAddonCount.removeAttribute('id');
 
-  //Resets its value
-  totalAddonsPrice = 0;
-
   addonDiv.forEach((div) => {
     totalAddonsPrice += div.querySelector(".addon-count").textContent * div.querySelector(".addon-name").value;
   });
   
   updateTotalPrice();
-  
+
+  //Resets its value
+  totalAddonsPrice = 0;
   addonSelection.style.display = "none";
   addOnQuantity.value = 0;
 
