@@ -83,14 +83,20 @@
                 </div>';
         }
       ?>
+      
     </div>
+    <div class="cart-div" style="display: none">
+      <h2>My Shopping Cart</h2>
+      <span>Total <span id="item-count">0</span> items</span>
+      <div class="cart-container"></div>
+    </div>
+
     <div class="coffee-bg">
       <h3>Items</h3>
       <span id="item-count">0</span>
       <h3>Total Price</h3>
       <span id="total-price">P 0</span>
     </div>
-
 
     <!-- beverage selection -->
     <div id="item" style="display: none">
@@ -125,6 +131,7 @@
     <button id="addon-inc">+</button>
     <button id="addon-submit">Done</button>
   </div>
+  
   
   </body>
 </html>

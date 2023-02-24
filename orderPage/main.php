@@ -189,7 +189,9 @@ beverages.forEach((card) => {
             const addonSpan = button.querySelector('.addon-count');
             addonSpan.setAttribute('id', 'chosen-addon');
             addonSelection.style.display = "block";
-            decAddon.disabled = true;
+            var addonTabCount = document.querySelector("#addon-tab-count");
+            addonTabCount.value = parseInt(button.querySelector(".addon-count").textContent);
+            if(addonTabCount.value == 0) decAddon.disabled = true;
           });
         });
 
@@ -201,10 +203,11 @@ beverages.forEach((card) => {
             
             var itemTitle = document.querySelector("#item-title");
             itemTitle.value = itemSize.getAttribute('beverageID');
-            console.log(itemTitle.value); 
+
             var itemPrice = document.querySelector("#item-price");
             itemPrice.textContent = itemSize.value;
             
+            itemSizePrice = itemSize.value;
             updateTotalPrice();
 
             clickedSize.forEach(state => {
@@ -246,7 +249,15 @@ addonSubmit.addEventListener("click", () => {
 
 // Beverage Selection Variables
 order.addEventListener("click", () => {
-  // ....SUM CODE TO SAVE THE CONTENT OF THE DATA
+  var addonsObj = [];
+  var addons = document.querySelectorAll(".addons-category");
+  addons.forEach((item) => {
+    const addon = {
+      "addonName": item.querySelector(".addon-name").textContent,
+      "addonCount": item.querySelector(".addon-count").textContent
+    };
+    addonsObj.push(addon);
+  });
   item.style.display = "none";
 });
 
