@@ -218,7 +218,6 @@ beverages.forEach((card) => {
             chosen.classList.add('active-size');
           });
         });
-
       } else console.log("The request failed!");
     };
     xhr.send("beverageID=" + beverageID);
@@ -240,8 +239,6 @@ addonSubmit.addEventListener("click", () => {
   
   updateTotalPrice();
 
-  //Resets its value
-  totalAddonsPrice = 0;
   addonSelection.style.display = "none";
   addOnQuantity.value = 0;
 
@@ -263,6 +260,11 @@ order.addEventListener("click", () => {
 
 cancelOrder.addEventListener("click", () => {
   // ....SUM CODE TO SAVE THE CONTENT OF THE DATA
+  totalAddonsPrice = 0;
+  addons = document.querySelectorAll(".addons-category");
+  addons.forEach((addon) => {
+    addon.querySelector(".addon-count").textContent = 0;
+  });
   item.style.display = "none";
 });
 
