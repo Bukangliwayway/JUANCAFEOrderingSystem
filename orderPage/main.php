@@ -281,6 +281,82 @@ order.addEventListener("click", () => {
   cartOrders.push(orderData);
   console.log(cartOrders);
   item.style.display = "none";
+
+  // CART DIV PROTOTYPE
+
+  // create cart-card div element
+  const cartCardDiv = document.createElement("div");
+  cartCardDiv.classList.add("cart-card");
+
+  // create cart-title h2 element
+  const cartTitle = document.createElement("h2");
+  cartTitle.textContent = orderData.orderTitle;
+  cartTitle.classList.add("cart-title");
+
+  // create cart-sub-container div element
+  const cartSubContainerDiv = document.createElement("div");
+  cartSubContainerDiv.classList.add("cart-sub-container");
+
+  // create cart-image img element
+  var cartImageImg = document.createElement("img");
+  cartImageImg.src = orderData.orderImg;
+  cartImageImg.classList.add("cart-image");
+
+  // create cart-item-selection div element
+  const cartItemSelectionDiv = document.createElement("div");
+  cartItemSelectionDiv.classList.add("cart-item-selection");
+
+  // create cart-size span element
+  var cartSizeSpan = document.createElement("span");
+  cartSizeSpan.textContent = orderData.orderSize;
+  cartSizeSpan.classList.add("cart-size");
+
+  // create cart-total span element
+  var cartTotalSpan = document.createElement("span");
+  cartTotalSpan.textContent = orderData.orderPrice;
+  cartTotalSpan.classList.add("cart-total");
+
+  // append cart-size and cart-total to cart-item-selection
+  cartItemSelectionDiv.appendChild(cartSizeSpan);
+  cartItemSelectionDiv.appendChild(cartTotalSpan);
+
+  // create cart-addons div element
+  var cartAddonsDiv = document.createElement("div");
+  cartAddonsDiv.classList.add("cart-addons");
+
+  // create contents for cart addons 
+  orderData.orderAddons.forEach((data) => {
+    var cartAddonCard = document.createElement("div");
+    var cartAddonName = document.createElement("span");
+    var cartAddonCount = document.createElement("span");
+
+    cartAddonCard.classList.add("cart-addons-card");
+
+    cartAddonName.textContent = data.addonDataName;
+    cartAddonCount.textContent = data.addonDataCount;
+    
+    cartAddonCard.appendChild(cartAddonName);
+    cartAddonCard.appendChild(cartAddonCount);
+    cartAddonsDiv.appendChild(cartAddonCard);
+  });
+
+
+  // append cart-image, cart-item-selection and cart-addons to cart-sub-container
+  cartSubContainerDiv.appendChild(cartImageImg);
+  cartSubContainerDiv.appendChild(cartItemSelectionDiv);
+  cartSubContainerDiv.appendChild(cartAddonsDiv);
+  
+  // create an image for X button
+  var xButton = document.createElement("img");
+  xButton.classList.add("cart-x-button");
+  
+  // append cart-sub-container and cart-title to cart-card
+  cartCardDiv.appendChild(xButton);
+  cartCardDiv.appendChild(cartTitle);
+  cartCardDiv.appendChild(cartSubContainerDiv);
+
+  const cartCardContainer = document.querySelector(".cart-container");
+  cartCardContainer.appendChild(cartCardDiv);
 });
 
 cancelOrder.addEventListener("click", () => {
