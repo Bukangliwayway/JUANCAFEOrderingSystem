@@ -152,9 +152,8 @@ beverages.forEach((card) => {
         //Set Default Active Size
         const allSizes = document.querySelectorAll(".size-category");
         allSizes.forEach((size) => {
-          name = size.querySelector(".size-name"); 
+          var name = size.querySelector(".size-name"); 
           if(name.textContent === beverage.size) size.classList.add("active-size");
-          
         });
         
         // ADDONS CONTAINER
@@ -166,6 +165,7 @@ beverages.forEach((card) => {
         addons.forEach((addon) => {
           var div = document.createElement("div");
           div.classList.add("addons-category");
+          div.setAttribute("addonID", addon.id);
 
           // Create the addon name span element
           var addonName = document.createElement("span");
@@ -241,7 +241,9 @@ addonSubmit.addEventListener("click", () => {
 
   activeAddonCount.innerHTML = addOnQuantity.value;
   activeAddonCount.removeAttribute('id');
-
+  
+  //Reset totaladdon
+  totalAddonsPrice = 0;
   addonDiv.forEach((div) => {
     totalAddonsPrice += div.querySelector(".addon-count").textContent * div.querySelector(".addon-name").value;
   });
@@ -257,22 +259,23 @@ addonSubmit.addEventListener("click", () => {
 order.addEventListener("click", () => {
   var addonsObj = [];
   var addons = document.querySelectorAll(".addons-category");
-  addons.forEach((item) => {
-    const addon = {
-      "addonName": item.querySelector(".addon-name").textContent,
-      "addonCount": item.querySelector(".addon-count").textContent
+  addons.forEach((addon) => {
+    const addonData = {
+      "addonDataName": addon.querySelector(".addon-name").textContent,
+      "addonDataCount": addon.querySelector(".addon-count").textContent,
+      "addonDataID": addon.getAttribute("addonID"),
     };
-    addonsObj.push(addon);
+    addonsObj.push(addonData);
   });
-
-  var item = {
-    "itemTitle": document.querySelector("#item-title").textContent,
-    "itemSize": document.querySelector("div.active-size span.size-name").textContent,
-    "itemImg": document.querySelector("#item-image").src,
-    "itemPrice": document.querySelector("#order-price").textContent,
-    "itemAddons": addonsObj,
+  var orderData = {
+    "orderTitle": document.querySelector("#item-title").textContent,
+    "orderSize": document.querySelector("div.active-size span.size-name").textContent,
+    "orderImg": document.querySelector("#item-image").src,
+    "orderPrice": document.querySelector("#order-price").textContent,
+    "orderAddons": addonsObj,
+    "orderID": document.querySelector("#item-title").value
   }
-  cartOrders.push(item);
+  cartOrders.push(orderData);
   console.log(cartOrders);
   item.style.display = "none";
 });
