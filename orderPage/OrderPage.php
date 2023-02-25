@@ -105,9 +105,7 @@
         <h2 id="item-price">Price</h2>
         <img src="#" alt="beverage" id="item-image"/>
       </div>
-      <div class="sizes-container">
-        
-      </div>
+      <div class="sizes-container"></div>
       <h2>AddOns:</h2>
       <div class="addons-container">
         <div class="items-addons"></div>

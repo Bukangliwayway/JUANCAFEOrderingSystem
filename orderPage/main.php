@@ -125,6 +125,7 @@ beverages.forEach((card) => {
         var itemPrice = document.querySelector("#item-price");
         var itemImage = document.querySelector("#item-image");
         itemTitle.textContent = beverage.name;
+        itemTitle.value = beverage.id
         itemPrice.textContent = beverage.price;
         itemImage.src = beverage.image;
 
@@ -153,7 +154,9 @@ beverages.forEach((card) => {
         const allSizes = document.querySelectorAll(".size-category");
         allSizes.forEach((size) => {
           var name = size.querySelector(".size-name"); 
-          if(name.textContent === beverage.size) size.classList.add("active-size");
+          if(name.textContent === beverage.size){
+            size.classList.add("active-size");
+          }
         });
         
         // ADDONS CONTAINER
