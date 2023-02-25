@@ -66,6 +66,7 @@
 const categoryButtons = document.querySelectorAll(".category");
 const beverages = document.querySelectorAll(".card");
 
+var cartOrders = [];
 var totalAddonsPrice = 0;
 var itemSizePrice = 0;
 
@@ -148,6 +149,14 @@ beverages.forEach((card) => {
           sizeContainer.appendChild(div);
         });
 
+        //Set Default Active Size
+        const allSizes = document.querySelectorAll(".size-category");
+        allSizes.forEach((size) => {
+          name = size.querySelector(".size-name"); 
+          if(name.textContent === beverage.size) size.classList.add("active-size");
+          
+        });
+        
         // ADDONS CONTAINER
         var addonsContainer = document.querySelector(".addons-container");
 
@@ -200,7 +209,7 @@ beverages.forEach((card) => {
         clickedSize.forEach((chosen) => {
           chosen.addEventListener("click", () => {
             itemSize = chosen.querySelector(".size-name");
-            
+
             var itemTitle = document.querySelector("#item-title");
             itemTitle.value = itemSize.getAttribute('beverageID');
 
@@ -255,6 +264,16 @@ order.addEventListener("click", () => {
     };
     addonsObj.push(addon);
   });
+
+  var item = {
+    "itemTitle": document.querySelector("#item-title").textContent,
+    "itemSize": document.querySelector("div.active-size span.size-name").textContent,
+    "itemImg": document.querySelector("#item-image").src,
+    "itemPrice": document.querySelector("#order-price").textContent,
+    "itemAddons": addonsObj,
+  }
+  cartOrders.push(item);
+  console.log(cartOrders);
   item.style.display = "none";
 });
 
