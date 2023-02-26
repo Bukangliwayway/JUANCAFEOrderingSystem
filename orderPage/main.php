@@ -279,7 +279,6 @@ order.addEventListener("click", () => {
     "orderID": document.querySelector("#item-title").value
   }
   cartOrders.push(orderData);
-  console.log(cartOrders);
   item.style.display = "none";
 
   // CART DIV PROTOTYPE
@@ -357,6 +356,16 @@ order.addEventListener("click", () => {
 
   const cartCardContainer = document.querySelector(".cart-container");
   cartCardContainer.appendChild(cartCardDiv);
+
+  var totalCount = document.querySelector("#total-count"); 
+  var totalPrice = document.querySelector("#total-price"); 
+  var total = 0;
+  totalCount.textContent = cartOrders.length;
+  cartOrders.forEach((order) => {
+    total += parseInt(order.orderPrice);
+  });
+  totalPrice.textContent = total;
+
 });
 
 cancelOrder.addEventListener("click", () => {

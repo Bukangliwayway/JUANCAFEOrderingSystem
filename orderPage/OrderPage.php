@@ -45,7 +45,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script defer src="main.php"></script>
-    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="style.css">
 
   </head>
   <body>
@@ -93,7 +93,7 @@
 
     <div class="coffee-bg">
       <h3>Items</h3>
-      <span id="item-count">0</span>
+      <span id="total-count">0</span>
       <h3>Total Price</h3>
       <span id="total-price">P 0</span>
     </div>
