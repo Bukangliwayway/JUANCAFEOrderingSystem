@@ -70,6 +70,12 @@ var cartOrders = [];
 var totalAddonsPrice = 0;
 var itemSizePrice = 0;
 
+const beverageDiv = document.querySelector(".beverages-div");
+const cart = document.querySelector(".cart");
+const activeCart = document.querySelector("#active-cart");
+const cartDiv = document.querySelector(".cart-div");
+const lowerPortion  = document.querySelector("#lower");
+
 // Beverage Selection Variables
 const item = document.getElementById("item");
 const order = document.querySelector("#item-order");
@@ -104,10 +110,37 @@ categoryButtons.forEach((button) => {
   });
 });
 
+cart.addEventListener("click", () => {
+  if(cart.querySelector("img").src.endsWith("cart.png")){
+    cartDiv.style.display = "block";
+    cart.querySelector("img").src = "assets/home.png";
+    
+    //Set the Cart Visibility
+    beverageDiv.style.display = "none";
+    lower.style.display = "none";
+  }
+  else{
+    cart.querySelector("img").src = "assets/cart.png";
+    beverageDiv.style.display = "block";
+    lower.style.display = "block";
+    cartDiv.style.display = "none";
+  }
+  
+
+});
+
+
 beverages.forEach((card) => {
   card.addEventListener("click", () => {
+
     //Set the Beverage Selection Visibility
     item.style.display = "block";
+    beverageDiv.style.display = "none";
+    lower.style.display = "none"
+    cart.style.display = "none"
+
+
+
 
     // Beverage Container
     var beverageID = card.id;
@@ -123,12 +156,11 @@ beverages.forEach((card) => {
 
         var itemTitle = document.querySelector("#item-title");
         var itemPrice = document.querySelector("#item-price");
-        var itemImage = document.querySelector("#item-image");
+        var itemImage = document.querySelector(".beverage-container");
         itemTitle.textContent = beverage.name;
         itemTitle.value = beverage.id
         itemPrice.textContent = beverage.price;
-        itemImage.src = beverage.image;
-
+        itemImage.style.backgroundImage = `url(${beverage.image})`;
         itemSizePrice = beverage.price;
         updateTotalPrice();
 
@@ -169,6 +201,7 @@ beverages.forEach((card) => {
           var div = document.createElement("div");
           div.classList.add("addons-category");
           div.setAttribute("addonID", addon.id);
+          div.style.backgroundImage = `url(${addon.image})`
 
           // Create the addon name span element
           var addonName = document.createElement("span");
@@ -182,15 +215,9 @@ beverages.forEach((card) => {
           addonCount.setAttribute("class", "addon-count");
           addonCount.textContent = 0;
 
-          // Create the addon image element
-          var addonImg = document.createElement("img");
-          addonImg.src = addon.image;
-          addonImg.alt = addon.name;
-
           // Append the elements to the div
           div.appendChild(addonName);
           div.appendChild(addonCount);
-          div.appendChild(addonImg);
           addonsContainer.appendChild(div);
         });
 
@@ -198,9 +225,26 @@ beverages.forEach((card) => {
         const clickedAddon = document.querySelectorAll(".addons-category");
         clickedAddon.forEach((button) => {
           button.addEventListener("click", () => {
+            addonSelection.style.display = "flex";
+            addonSelection.classList.add("overlay");
+
             const addonSpan = button.querySelector('.addon-count');
             addonSpan.setAttribute('id', 'chosen-addon');
-            addonSelection.style.display = "block";
+            
+            //Prepare Addon-Select Div
+            
+            const style = getComputedStyle(button);
+            const backgroundImage = style.getPropertyValue('background-image');
+            
+            const addonName =document.querySelector("#addon-tab-title");
+            const addonPrice =document.querySelector("#addon-tab-price");
+            const addonDiv = document.querySelector(".addon-info");
+
+            addonDiv.style.backgroundImage = backgroundImage;
+            addonName.textContent = button.querySelector(".addon-name").textContent;
+            addonPrice.textContent = button.querySelector(".addon-name").value;
+
+
             var addonTabCount = document.querySelector("#addon-tab-count");
             addonTabCount.value = parseInt(button.querySelector(".addon-count").textContent);
             if(addonTabCount.value == 0) decAddon.disabled = true;
@@ -260,6 +304,14 @@ addonSubmit.addEventListener("click", () => {
 
 // Beverage Selection Variables
 order.addEventListener("click", () => {
+  
+  item.style.display = "none";
+  beverageDiv.style.display = "block";
+  lower.style.display = "block"
+  cart.style.display = "block"
+  
+
+
   var addonsObj = [];
   var addons = document.querySelectorAll(".addons-category");
   addons.forEach((addon) => {
@@ -270,16 +322,21 @@ order.addEventListener("click", () => {
     };
     addonsObj.push(addonData);
   });
+
+  const element = document.querySelector('.beverage-container');
+  const style = getComputedStyle(element);
+  const backgroundImage = style.getPropertyValue('background-image');
+  const imagePath = backgroundImage.slice(4, -1).replace(/"/g, "");
+
   var orderData = {
     "orderTitle": document.querySelector("#item-title").textContent,
     "orderSize": document.querySelector("div.active-size span.size-name").textContent,
-    "orderImg": document.querySelector("#item-image").src,
+    "orderImg": imagePath,
     "orderPrice": document.querySelector("#order-price").textContent,
     "orderAddons": addonsObj,
     "orderID": document.querySelector("#item-title").value
   }
   cartOrders.push(orderData);
-  item.style.display = "none";
 
   // CART DIV PROTOTYPE
 
@@ -358,18 +415,31 @@ order.addEventListener("click", () => {
   cartCardContainer.appendChild(cartCardDiv);
 
   var totalCount = document.querySelector("#total-count"); 
+  var itemCount = document.querySelector("#item-count"); 
+
   var totalPrice = document.querySelector("#total-price"); 
   var total = 0;
   totalCount.textContent = cartOrders.length;
+  itemCount.textContent = cartOrders.length;
   cartOrders.forEach((order) => {
     total += parseInt(order.orderPrice);
   });
   totalPrice.textContent = total;
 
+  totalAddonsPrice = 0;
+  addons = document.querySelectorAll(".addons-category");
+  addons.forEach((addon) => {
+    addon.querySelector(".addon-count").textContent = 0;
+  });
 });
 
 cancelOrder.addEventListener("click", () => {
-  // ....SUM CODE TO SAVE THE CONTENT OF THE DATA
+
+  item.style.display = "none";
+  beverageDiv.style.display = "block";
+  lower.style.display = "block"
+  cart.style.display = "block"
+
   totalAddonsPrice = 0;
   addons = document.querySelectorAll(".addons-category");
   addons.forEach((addon) => {
@@ -394,3 +464,4 @@ function updateTotalPrice() {
   totalPrice.textContent = parseFloat(totalAddonsPrice) + parseFloat(itemSizePrice);
   
 }
+

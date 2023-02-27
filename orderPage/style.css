@@ -1,18 +1,417 @@
 @media screen and (max-width: 720px) {
-  .button {
+  * {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  }
+  
+  body{
+    background: #c1a37d;
+  }
+
+  img {
     display: block;
-    padding: 10px;
-    background-color: red;
-    color: white;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .coffee-bg{
+    background: #442f04;
+    color: #fafffc;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 1.5rem 2rem;
+    border-radius: 0 0 10px 10px;
+    height: 15vh; /* Example height */
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.4);
+
+  }
+
+  .cart {
+    display: flex;
+    align-items: center;
+    justify-content: center; /* Optional, if you want to horizontally center the image as well */
+  }
+  
+  .cart img {
+    height: 60%; /* Example height */
+    margin: auto;
+  }
+
+  .upper, .cart-container {
+    color:#432d0a;
+    padding: 0.5rem 2rem;
+
+  }
+
+  .sections, .sizes-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: center;
+    margin-top: 2vh;
+    flex-wrap: wrap;
+
+    gap: 1rem;
+
+  }
+  
+  .sections .category, .sizes-container .size-category {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    text-transform: capitalize;
+    justify-content: flex-start;
+    border: #432d0a 1px solid;
+    padding: 0.3rem 1rem;
+    padding-left: 0.5rem;
+    border-radius: 20px;
+    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.5);
+    background: #fff9e9;
+    flex-grow: 1;
+
+
+  }
+  
+  .sections .category img {
+    border-radius: 50%;
+    border: #432d0a 1px solid;
+    padding: 0.2rem 0.1rem;
+    height: 70%;
+    margin: 0;
+    margin-right: 0.5rem;
+  }
+
+  .sections .active-category, .sizes-container .active-size{
+    background: #6a4705;
+    color: #fff9e9;
+  }
+
+  .sections .active-category img, .cart img{
+    filter: brightness(0) invert(1);
+
+  }
+
+  .beverages, .addons-container, .cart-addons{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 2rem 4rem;
+    padding: 1rem 5rem;
+  }
+
+  .card, .addons-category, .cart-card{
+    border-radius: 10%;
+    background: #fff9e9;
+    height: 50vh;
+    width: 30vw;
+    padding: 1rem;
+    color: #523614;
+    position: relative;
+    border: rgba(0, 0, 0, 0.5) solid 1px;
+
+
+  }
+
+  .card .beverage-image{
+    border-radius: 10%;
+    width: 100%;
+    height: 70%;
+    border: #432d0a solid 1px;
+    padding: 2px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+
+  }
+
+  .card .add-icon{
+    position: absolute;
+    bottom: 15px;
+    right: 20px;
+    width: 30px;
+  }
+
+  .beverage-info{
+    margin-top: 1rem;
+  }
+
+  .beverage-info span:before, #item-price:before, #order-price:before, #addon-tab-price:before, .cart-total:before {
+    content: "₱";
+  }
+
+  #item {
+    padding: 2rem 5rem;
+    width: 70%;
+    margin: auto;
+  }
+  .beverage-container, .addons-category, .addon-info {
+    background: #fff9e9;
+    padding: 2rem;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    height: 50vh;
+    background-size: cover;
+    background-position: center;
+    border-radius: 10px;
+    
+  }
+
+  .transparent-bg{
+    background: linear-gradient(to right, rgba(255, 255, 255, 0.6), rgba(0, 0, 0, 0));
+    padding: 0.5rem 1.5rem;
+    border-radius: 30px 0px 0px 30px;
+    text-shadow: 1px 1px 2px rgba(239, 164, 0, 0.5);
+  }
+  
+  .beverage-container img, .cart-sub-container img {
+    width: 200px;
+    
+  }
+  
+  .sizes-container .size-category {
+    justify-content: center;
+    margin-bottom: 4vh;
+  }
+  
+  #item h2, .beverage-container h1, .cart-div h2 {
+
+    color: #432d0a;
+  }
+  
+  .addons-category{
+    height: 10vh;
+    width: 10vw;
+  }
+  
+  .addons-container {
+    grid-gap: 0.5rem 1rem;
+    padding: 1rem 1rem;
+    width: 50%;
+  }
+  
+  .align-horizontal {
+    display: flex;
+    align-items: center;
+    gap: 5vw;
+  }
+  
+  #item .bg-color {
+    border-radius: 10px;
+    background-color: #fff9e9;
+    padding: 1rem;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  }
+
+  .align-vertical{
+    gap: 10vh;
+  }
+
+  .addon-name{
+    color: #000000;
+    text-shadow: 2px 2px 2px rgb(228, 152, 0);
+    font-size: 1.2rem;
+    text-align: center;
+
+  }
+  .addons-category{
+    position: relative; /* set the overlay as absolute */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+  }
+
+  .addon-count{
+    position: absolute; /* set the overlay as absolute */
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0,0,0,0.3); /* set a semi-transparent background color */
+    color: #ffffff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1em;
+  }
+
+  #item-order,
+  #item-cancel, #addon-submit, #addon-dec, #addon-inc{
+    display: inline-block;
+    padding: 12px 24px;
+    font-size: 16px;
+    font-weight: bold;
     text-align: center;
     text-decoration: none;
-    font-size: 16px;
-    margin: 10px;
-    border-radius: 5px;
+    border-radius: 20px;
+    cursor: pointer;
+  }
+
+  #item-order, #addon-submit {
+    color: white;
+    background-color: #3d893f;
+    border: none;
+    margin-bottom: 2vh;
+  }
+
+  #item-cancel{
+    color: white;
+    background-color: #98271f;
     border: none;
   }
 
-  .class-active{
-    background: #000;
+  #order-price{
+    font-size: 2rem;
+    color: #6a4705;
+    text-align: end;
+    width: 100%;
+    padding-right: 1rem;
+  }
+
+  .price-container{
+    margin-bottom: 5vh;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .submission-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(9, 5, 0, 0.9);
+    z-index: 9999;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .addon-info{
+    width: 40vw;
+    height: 50vh;
+    color: #6a4705;
+  }
+
+  .addon-info .transparent-bg{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    font-size: 2rem;
+    font-weight: 900;
+  }
+  .addon-info .transparent-bg #addon-tab-price{
+    font-size: 1.5rem;
+    color: #000000;
+  }
+
+  #addon-tab-count {
+    width: 20vw;
+    height: 20vh;
+    border-radius: 20px;
+    text-align: center;
+    line-height: normal;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #c1a37d;
+    font-size: 2em;
+    margin: 1rem;
+  }
+
+  .addon-edit-count {
+    display: flex;
+    align-items: center;
+    padding: 1rem;
+  }
+
+  #addon-submit{
+    width: 20vw;
+  }
+  
+  #addon-dec, #addon-inc {
+    background: #6a4705;
+    font-size: 2.5em;
+  }
+
+  .cart-addons{
+    grid-gap: 1rem;
+    padding: 1rem;
+    width: 50%;
+  }
+
+  .cart-sub-container{
+    display: flex;
+    align-items: center;
+    gap: 5vw;
+  }
+
+  .cart-sub-container img{
+    border-radius: 10px;
+  }
+
+  .cart-card h2, .cart-item-selection{
+    text-align: center;
+    font-size: 2rem;
+  }
+  
+  .cart-card {
+    height: auto;
+    width: 100%;
+    padding: 1rem;
+    border-radius: 20px;
+    margin: 1rem;
+
+  }
+  .cart-item-selection {
+    display: flex;
+    flex-direction: column;
+
+  }
+
+  .cart-addons-card span:first-of-type:after, #lower h3:after{
+    content: ": ";
+  }
+
+  .cart-addons-card {
+    position: relative;
+  }
+
+  .cart-addons-card span:nth-child(2), #total-price, #total-count{
+    position: absolute;
+    right: 0;
+    font-weight: bolder;
+    font-size: 1.2rem;
+  }
+  
+  .cart-size {
+    font-weight: bolder;
+    font-size: 1.2rem;
+  }
+
+  #lower {
+    position: fixed;
+    bottom: 10px;
+    right: 0;
+    border-radius: 30px 0px 0px 30px;
+    display: flex;
+    flex-direction: column;
+    width: 30vw;
+    padding: 1rem 2rem;
+  }
+  
+  #lower div {
+    display: flex;
+    flex-direction: row;
+
+  }
+
+  #total-price, #total-count{
+    right: 20px;
   }
 }
